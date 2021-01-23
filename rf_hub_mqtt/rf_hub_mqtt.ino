@@ -14,8 +14,8 @@ const String mqttTopicWindow = "home/[DIVISION]/window";
 const String mqttTopicDoor = "home/[DIVISION]/door";
 const String mqttTopicStateSuffix = "/state";
 //const String mqttTopicInfoSuffix = "/info";
-const String door_window_sensor_info = "{\"name\":\"Alfawise 433MHz Wireless Magnetic Door/Window Sensor - White\",\"sw_version\":\"rf_hub_mqtt 1.0.0 by Patric\",\"model\":\"433MHz Wireless Magnetic Door/Window Sensor - White\",\"manufacturer\":\"Alfawise\",\"via_device\":\"RfHub\"}";
-const String discovery_payload_template = "{\"name\": \"[SENSOR_NAME]\", \"unique_id\": \"[UNIQUE_ID]\", \"device_class\": \"opening\", \"state_topic\": \"[MQTT_TOPIC]" + mqttTopicStateSuffix + "\", \"payload_on\": \"[PAYLOAD_ON]\", \"payload_off\": \"[PAYLOAD_OFF]\", \"device\": \"[DEVICE_INFO]\"}";
+const String door_window_sensor_info = "\"name\":\"Alfawise 433MHz Wireless Magnetic Door/Window Sensor - White\",\"sw_version\":\"rf_hub_mqtt 1.0.0 by Patric\",\"model\":\"433MHz Wireless Magnetic Door/Window Sensor - White\",\"manufacturer\":\"Alfawise\"";
+const String discovery_payload_template = "{\"name\": \"[SENSOR_NAME]\", \"unique_id\": \"[UNIQUE_ID]\", \"device_class\": \"opening\", \"state_topic\": \"[MQTT_TOPIC]" + mqttTopicStateSuffix + "\", \"payload_on\": \"[PAYLOAD_ON]\", \"payload_off\": \"[PAYLOAD_OFF]\", \"device\": {[DEVICE_INFO]}}";
 /***** NTP *****/
 const long utcOffsetInSeconds = 0;
 WiFiUDP ntpUDP;
@@ -129,6 +129,11 @@ void loop() {
       */
 
       lastCodeSent = decimal;
+    } else {
+      #ifdef DEBUG
+        Serial.print("Ignoring code: ");
+        Serial.println(decimal);
+      #endif
     }
   }
 }
