@@ -5,36 +5,53 @@
 #include <WiFiUdp.h>
 #include <time.h>
 
-#define DEBUG 1
+//#define DEBUG 1
 
 /****** MQTT TOPICS *******/
-const String welcome_topic_template = "homeassistant/binary_sensor/[DIVISION]/config ";
+const String welcome_topic_template = "homeassistant/binary_sensor/[DIVISION]/config";
 const String unknown_code_topic = "home/other/unknown";
-const String mqttTopicWindow = "home/[DIVISION]/window";
-const String mqttTopicDoor = "home/[DIVISION]/door";
 const String mqttTopicStateSuffix = "/state";
-//const String mqttTopicInfoSuffix = "/info";
-const String door_window_sensor_info = "\"name\":\"Alfawise 433MHz Wireless Magnetic Door/Window Sensor - White\",\"sw_version\":\"rf_hub_mqtt 1.0.0 by Patric\",\"model\":\"433MHz Wireless Magnetic Door/Window Sensor - White\",\"manufacturer\":\"Alfawise\"";
-const String discovery_payload_template = "{\"name\": \"[SENSOR_NAME]\", \"unique_id\": \"[UNIQUE_ID]\", \"device_class\": \"opening\", \"state_topic\": \"[MQTT_TOPIC]" + mqttTopicStateSuffix + "\", \"payload_on\": \"[PAYLOAD_ON]\", \"payload_off\": \"[PAYLOAD_OFF]\", \"device\": {[DEVICE_INFO]}}";
+const String mqttTopicInfoSuffix = "/info";
+const String discovery_payload_template = "{\"name\":\"[SENSOR_NAME]\",\"uniq_id\":\"[UNIQUE_ID]\",\"dev_cla\":\"opening\",\"stat_t\":\"[MQTT_TOPIC]" + mqttTopicStateSuffix + "\",\"pl_on\":\"[PAYLOAD_ON]\",\"pl_off\":\"[PAYLOAD_OFF]\"}"; //,\"dev\":{[DEVICE_INFO]}
 /***** NTP *****/
 const long utcOffsetInSeconds = 0;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 
-long timeBetweenMessages = 1000 * 1; // Interval between messages sent to MQTT with the same code (1 second)
+long timeBetweenMessages = 1000 * 5; // Interval between messages sent to MQTT with the same code (5 seconds)
 long lastMsg = 0;
-long lastCodeSent = 0;
+uint32_t lastCodeSent = 0;
+
+typedef struct { 
+  String name;
+  String unique_id;
+  String division;
+  String location;
+  String device_class;
+  String mqtt_status_topic;
+  String mqtt_info_topic;
+  String mqtt_availability_topic;
+  String parent_device;
+  uint32_t payload_on;
+  uint32_t payload_off;
+  uint32_t payload_low_battery;
+  String extra_attributes_json;
+} Sensor;
 
 RCSwitch mySwitch = RCSwitch();
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+// Secrets
 char* getMqttUser();
 char* getMqttPwd();
 char* getMqttServer();
 uint16_t getMqttPort();
 char* getWifiSsid();
 char* getWifiPwd();
+// Sensor
+void addSensor(Sensor sensor);
+void createSensors();
 
 void setup() {   
   
@@ -46,33 +63,10 @@ void setup() {
   setup_wifi();
   client.setServer(getMqttServer(), getMqttPort());
   timeClient.begin();
+  createSensors();
 }
 
-String getTopicByCode(long code) {
-  String topic = "";
-  String division = "";
-  
-  /***** Opened Doors *****/
-  topic = mqttTopicDoor;
-  division = "office";
-    
-  if (code == 9635587) {
-    topic.replace("[DIVISION]", division);
-    return topic;
-  }
-  
-  /***** Closed Doors *****/  
-  if (code == 9635593) {
-    topic.replace("[DIVISION]", division);
-    return topic;
-  }
-
-  /***** Other *****/
-  // ...
-
-  // Unknown codes
-  return unknown_code_topic;
-}
+String getTopicByCode(uint32_t code);
 
 void publishToMqtt(String topic, String payload) {
   
@@ -82,8 +76,13 @@ void publishToMqtt(String topic, String payload) {
     Serial.print(" to ");
     Serial.println(topic);
   #endif
-  
-  client.publish((char*) topic.c_str(), (char*) payload.c_str());
+
+  boolean published = client.publish((char*) topic.c_str(), (char*) payload.c_str(), true);
+  #ifdef DEBUG
+    if(!published) {
+      Serial.print("Payload was not published. The client was not currently connected to the server, or the resulting MQTT packet to exceeded the library's maximum packet size");
+    }
+  #endif
 }
 
 void loop() {
@@ -98,7 +97,7 @@ void loop() {
   if (mySwitch.available()) {
 
     // RF code received
-    long decimal = mySwitch.getReceivedValue();
+    uint32_t decimal = mySwitch.getReceivedValue();
     mySwitch.resetAvailable();
     
     #ifdef DEBUG
@@ -116,49 +115,31 @@ void loop() {
       }
 
       String topic = getTopicByCode(decimal);
+      topic.replace("/state", "");
 
-      // Publish state      
-      String payload = String(decimal);
-      String stateTopic = topic + mqttTopicStateSuffix;
-      publishToMqtt(stateTopic, payload);
+      if(unknown_code_topic == topic) {
+        String payload = String(decimal);
+        publishToMqtt(topic, payload);
+      } else {
+        // Publish state      
+        String payload = String(decimal);
+        String stateTopic = topic + mqttTopicStateSuffix;
+        publishToMqtt(stateTopic, payload);
 
-      // Publish info on different topic
-      /*payload = "{\"timestamp\": " + timeClient.getFormattedTime() + "\"}";
-      String infoTopic = topic + mqttTopicInfoSuffix;
-      publishToMqtt(infoTopic, payload);
-      */
-
+        // Publish info on different topic
+        payload = "{\"timestamp\":" + String(timeClient.getEpochTime()) + "\"}";
+        String infoTopic = topic + mqttTopicInfoSuffix;
+        publishToMqtt(infoTopic, payload);
+      }
+     
       lastCodeSent = decimal;
-    } else {
-      #ifdef DEBUG
-        Serial.print("Ignoring code: ");
-        Serial.println(decimal);
-      #endif
     }
   }
 }
 
-/*
- * Location: door, window, etc
- * Division: office, kitchen, etc
- * Name: Office Door
- * Payload On: RF code that sets the sensor on
- * Payload Off: RF code that sets the sensor off
- */
-void publishDiscoveryMsg(String sensorDivision, String sensorLocation, String sensorName, String payloadOn, String payloadOff, String deviceInfo) {
-  String payload = discovery_payload_template;
-  String welcome_topic = welcome_topic_template;
-  const String mqttTopicState = "home/" + sensorDivision + "/" + sensorLocation;
-  
-  payload.replace("[SENSOR_NAME]", sensorName);
-  payload.replace("[UNIQUE_ID]", sensorDivision + "_" + sensorLocation);
-  payload.replace("[MQTT_TOPIC]", mqttTopicState);
-  payload.replace("[PAYLOAD_ON]", payloadOn);
-  payload.replace("[PAYLOAD_OFF]", payloadOff);
-  payload.replace("[DEVICE_INFO]", deviceInfo);
-  welcome_topic.replace("[DIVISION]", sensorDivision + "/" + sensorLocation);
-  publishToMqtt(welcome_topic, payload);
-}
+void publishDiscoveryMsg(Sensor sensor);
+
+void publishDiscoveryMsgs();
 
 void reconnect() {
   
@@ -174,9 +155,7 @@ void reconnect() {
       #endif
       
       // Once connected, publish an announcement for each sensor...
-      // Office door
-      publishDiscoveryMsg("office", "door", "Office Door", "9635587", "9635593", door_window_sensor_info);
-      // ...
+      publishDiscoveryMsgs();
       
     } else {
       #ifdef DEBUG
