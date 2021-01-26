@@ -59,31 +59,18 @@ void createSensors() {
   /***********************/
   /******* WINDOWS *******/
   /***********************/
+
   // 1
-  sensor.name = "Office Door";
-  sensor.unique_id = "office_door";
-  sensor.division = OFFICE;
-  sensor.device_class = DOOR;
+  sensor = getNewSensor();
+  sensor.name = "[SENSOR NAME]";
+  sensor.unique_id = "[SENSOR UNIQUE ID]]";
+  sensor.division = "[SENSOR DIVISION]";
+  sensor.device_class = OPENING;
   sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
   sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
   sensor.parent_device = HUB_NAME;
   sensor.payload_on = 495987;
   sensor.payload_off = 495993;
-  sensor.enabled = true;
-  addSensor(sensor);
-
-  // 4
-  sensor = getNewSensor();
-  sensor.name = "Fridge Door";
-  sensor.unique_id = "fridge_door";
-  sensor.division = KITCHEN;
-  sensor.device_class = OPENING;
-  sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
-  sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
-  sensor.parent_device = HUB_NAME;
-  sensor.payload_on = 614627;
-  sensor.payload_off = 614633;
-  sensor.enabled = true;
   addSensor(sensor);
 
   // 2
@@ -110,6 +97,20 @@ void createSensors() {
   sensor.parent_device = HUB_NAME;
   sensor.payload_on = 546691;
   sensor.payload_off = 546697;
+  addSensor(sensor);
+  
+  // 4
+  sensor = getNewSensor();
+  sensor.name = "Fridge Door";
+  sensor.unique_id = "fridge_door";
+  sensor.division = KITCHEN;
+  sensor.device_class = OPENING;
+  sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
+  sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
+  sensor.parent_device = HUB_NAME;
+  sensor.payload_on = 614627;
+  sensor.payload_off = 614633;
+  sensor.enabled = true;
   addSensor(sensor);
 
   // 5
@@ -308,16 +309,16 @@ void createSensors() {
   addSensor(sensor);
 
   // 20
-  sensor = getNewSensor();
-  sensor.name = "[SENSOR NAME]";
-  sensor.unique_id = "[SENSOR UNIQUE ID]]";
-  sensor.division = "[SENSOR DIVISION]";
-  sensor.device_class = OPENING;
+  sensor.name = "Office Door";
+  sensor.unique_id = "office_door";
+  sensor.division = OFFICE;
+  sensor.device_class = DOOR;
   sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
   sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
   sensor.parent_device = HUB_NAME;
   sensor.payload_on = 9635587;
   sensor.payload_off = 9635593;
+  sensor.enabled = true;
   addSensor(sensor);
 
 

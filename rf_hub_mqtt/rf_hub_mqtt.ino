@@ -12,7 +12,7 @@ const String welcome_topic_template = "homeassistant/binary_sensor/[DIVISION]/co
 const String unknown_code_topic = "home/other/unknown";
 const String mqttTopicStateSuffix = "/state";
 const String mqttTopicInfoSuffix = "/info";
-const String discovery_payload_template = "{\"name\":\"[SENSOR_NAME]\",\"uniq_id\":\"[UNIQUE_ID]\",\"dev_cla\":\"[DEVICE_CLASS]\",\"stat_t\":\"[MQTT_TOPIC]" + mqttTopicStateSuffix + "\",\"pl_on\":\"[PAYLOAD_ON]\",\"pl_off\":\"[PAYLOAD_OFF]\"}"; //,\"dev\":{[DEVICE_INFO]}
+const String discovery_payload_template = "{\"name\":\"[SENSOR_NAME]\",\"uniq_id\":\"[UNIQUE_ID]\",\"dev_cla\":\"[DEVICE_CLASS]\",\"stat_t\":\"[MQTT_TOPIC]\",\"pl_on\":\"[PAYLOAD_ON]\",\"pl_off\":\"[PAYLOAD_OFF]\"}"; //,\"dev\":{[DEVICE_INFO]}
 /***** NTP *****/
 const long utcOffsetInSeconds = 0;
 WiFiUDP ntpUDP;
@@ -128,9 +128,11 @@ void loop() {
         publishToMqtt(stateTopic, payload);
 
         // Publish info on different topic
+        /*
         payload = "{\"timestamp\":" + String(timeClient.getEpochTime()) + "\"}";
         String infoTopic = topic + mqttTopicInfoSuffix;
         publishToMqtt(infoTopic, payload);
+        */
       }
      
       lastCodeSent = decimal;
