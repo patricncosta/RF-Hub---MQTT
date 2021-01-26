@@ -415,11 +415,10 @@ void publishDiscoveryMsg(Sensor sensor) {
 
   String payload = discovery_payload_template;
   String welcome_topic = welcome_topic_template;
-  const String mqttTopicState = "home/" + sensor.division + "/" + sensor.unique_id;
   
   payload.replace("[SENSOR_NAME]", sensor.name);
   payload.replace("[UNIQUE_ID]", sensor.unique_id);
-  payload.replace("[MQTT_TOPIC]", mqttTopicState);
+  payload.replace("[MQTT_TOPIC]", sensor.mqtt_status_topic);
   payload.replace("[PAYLOAD_ON]", String(sensor.payload_on));
   payload.replace("[PAYLOAD_OFF]", String(sensor.payload_off));
   payload.replace("[DEVICE_CLASS]", sensor.device_class);
