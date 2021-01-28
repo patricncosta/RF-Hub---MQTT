@@ -10,6 +10,7 @@
 /****** MQTT TOPICS *******/
 const String welcome_topic_template = "homeassistant/binary_sensor/[DIVISION]/config";
 const String unknown_code_topic = "home/other/unknown";
+const String disabled_code_topic = "home/other/disabled";
 const String mqttTopicStateSuffix = "/state";
 const String mqttTopicInfoSuffix = "/info";
 const String discovery_payload_template = "{\"name\":\"[SENSOR_NAME]\",\"uniq_id\":\"[UNIQUE_ID]\",\"dev_cla\":\"[DEVICE_CLASS]\",\"stat_t\":\"[MQTT_TOPIC]\",\"pl_on\":\"[PAYLOAD_ON]\",\"pl_off\":\"[PAYLOAD_OFF]\"}"; //,\"dev\":{[DEVICE_INFO]}
