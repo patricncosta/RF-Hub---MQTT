@@ -187,6 +187,7 @@ void setup_wifi() {
 
   WiFi.hostname("RfHub");
   WiFi.begin(getWifiSsid(), getWifiPwd());
+  WiFi.softAPdisconnect(true);
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);

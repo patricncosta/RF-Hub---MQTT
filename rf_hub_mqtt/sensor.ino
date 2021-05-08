@@ -8,6 +8,7 @@ static const String OFFICE = "office";
 static const String KITCHEN = "kitchen";
 static const String BEDROOM_CARINA = "bedroom_carina";
 static const String BEDROOM_PATRIC = "bedroom_patric";
+static const String WC = "wc";
 // Device Classes
 static const String OPENING = "opening";
 static const String MOTION = "motion";
@@ -61,17 +62,17 @@ void createSensors() {
   /***********************/
 
   // 1
-  // sensor = getNewSensor();
-  // sensor.name = "[SENSOR NAME]";
-  // sensor.unique_id = "[SENSOR UNIQUE ID]]";
-  // sensor.division = "[SENSOR DIVISION]";
-  // sensor.device_class = OPENING;
-  // sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
-  // sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
-  // sensor.parent_device = HUB_NAME;
-  // sensor.payload_on = 495987;
-  // sensor.payload_off = 495993;
-  // addSensor(sensor);
+  sensor = getNewSensor();
+  sensor.name = "[SENSOR NAME]";
+  sensor.unique_id = "[SENSOR UNIQUE ID]]";
+  sensor.division = "[SENSOR DIVISION]";
+  sensor.device_class = OPENING;
+  sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
+  sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
+  sensor.parent_device = HUB_NAME;
+  sensor.payload_on = 495987;
+  sensor.payload_off = 495993;
+  addSensor(sensor);
 
   // 2
   sensor = getNewSensor();
@@ -100,17 +101,17 @@ void createSensors() {
   addSensor(sensor);
 
   // 4
-  // sensor = getNewSensor();
-  // sensor.name = "[SENSOR NAME]";
-  // sensor.unique_id = "[SENSOR UNIQUE ID]]";
-  // sensor.division = "[SENSOR DIVISION]";
-  // sensor.device_class = OPENING;
-  // sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
-  // sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
-  // sensor.parent_device = HUB_NAME;
-  // sensor.payload_on = 614627;
-  // sensor.payload_off = 614633;
-  // addSensor(sensor);
+  sensor = getNewSensor();
+  sensor.name = "[SENSOR NAME]";
+  sensor.unique_id = "[SENSOR UNIQUE ID]]";
+  sensor.division = "[SENSOR DIVISION]";
+  sensor.device_class = OPENING;
+  sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
+  sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
+  sensor.parent_device = HUB_NAME;
+  sensor.payload_on = 614627;
+  sensor.payload_off = 614633;
+  addSensor(sensor);
 
   // 5
   sensor = getNewSensor();
@@ -205,17 +206,17 @@ void createSensors() {
   addSensor(sensor);
 
   // 12
-  // sensor = getNewSensor();
-  // sensor.name = "[SENSOR NAME]";
-  // sensor.unique_id = "[SENSOR UNIQUE ID]]";
-  // sensor.division = "[SENSOR DIVISION]";
-  // sensor.device_class = OPENING;
-  // sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
-  // sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
-  // sensor.parent_device = HUB_NAME;
-  // sensor.payload_on = 618531;
-  // sensor.payload_off = 618537;
-  // addSensor(sensor);
+  sensor = getNewSensor();
+  sensor.name = "[SENSOR NAME]";
+  sensor.unique_id = "[SENSOR UNIQUE ID]]";
+  sensor.division = "[SENSOR DIVISION]";
+  sensor.device_class = OPENING;
+  sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
+  sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
+  sensor.parent_device = HUB_NAME;
+  sensor.payload_on = 618531;
+  sensor.payload_off = 618537;
+  addSensor(sensor);
 
   // 13
   sensor = getNewSensor();
@@ -309,10 +310,10 @@ void createSensors() {
   // addSensor(sensor);
 
   // 20
-  sensor.name = "Office Door";
-  sensor.unique_id = "office_door";
-  sensor.division = OFFICE;
-  sensor.device_class = DOOR;
+  sensor.name = "WC Window";
+  sensor.unique_id = "wc_window";
+  sensor.division = WC;
+  sensor.device_class = WINDOW;
   sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
   sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
   sensor.parent_device = HUB_NAME;
@@ -338,16 +339,16 @@ void createSensors() {
   // addSensor(sensor);
 
   // 2
-  sensor = getNewSensor();
-  sensor.name = "[SENSOR NAME]";
-  sensor.unique_id = "[SENSOR UNIQUE ID]]";
-  sensor.division = "[SENSOR DIVISION]";
-  sensor.device_class = MOTION;
-  sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
-  sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
-  sensor.parent_device = HUB_NAME;
-  sensor.payload_on = 6181478;
-  addSensor(sensor);
+  // sensor = getNewSensor();
+  // sensor.name = "[SENSOR NAME]";
+  // sensor.unique_id = "[SENSOR UNIQUE ID]]";
+  // sensor.division = "[SENSOR DIVISION]";
+  // sensor.device_class = MOTION;
+  // sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
+  // sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
+  // sensor.parent_device = HUB_NAME;
+  // sensor.payload_on = 6181478;
+  // addSensor(sensor);
 
   // 3
   // sensor = getNewSensor();
@@ -362,30 +363,30 @@ void createSensors() {
   // addSensor(sensor);
 
   // 4
-  sensor = getNewSensor();
-  sensor.name = "Bedroom Patric";
-  sensor.unique_id = "bedroom_patric";
-  sensor.division = BEDROOM_PATRIC;
-  sensor.device_class = MOTION;
-  sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
-  sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
-  sensor.parent_device = HUB_NAME;
-  sensor.payload_on = 6380198;
-  sensor.enabled = true;
-  addSensor(sensor);
+  // sensor = getNewSensor();
+  // sensor.name = "Bedroom Patric";
+  // sensor.unique_id = "bedroom_patric";
+  // sensor.division = BEDROOM_PATRIC;
+  // sensor.device_class = MOTION;
+  // sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
+  // sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
+  // sensor.parent_device = HUB_NAME;
+  // sensor.payload_on = 6380198;
+  // sensor.enabled = true;
+  // addSensor(sensor);
 
   // 5
-  sensor = getNewSensor();
-  sensor.name = "Bedroom Carina";
-  sensor.unique_id = "bedroom_carina";
-  sensor.division = BEDROOM_CARINA;
-  sensor.device_class = MOTION;
-  sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
-  sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
-  sensor.parent_device = HUB_NAME;
-  sensor.payload_on = 292902;
-  sensor.enabled = true;
-  addSensor(sensor);
+  // sensor = getNewSensor();
+  // sensor.name = "Bedroom Carina";
+  // sensor.unique_id = "bedroom_carina";
+  // sensor.division = BEDROOM_CARINA;
+  // sensor.device_class = MOTION;
+  // sensor.mqtt_status_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/state";
+  // sensor.mqtt_info_topic = "home/" + sensor.division + "/" + sensor.unique_id + "/info";
+  // sensor.parent_device = HUB_NAME;
+  // sensor.payload_on = 292902;
+  // sensor.enabled = true;
+  // addSensor(sensor);
 
 }
 
